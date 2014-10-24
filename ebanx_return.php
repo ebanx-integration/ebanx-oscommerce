@@ -32,4 +32,4 @@
 
 require ('includes/configure.php');
 
-header('Location: ' . HTTP_SERVER . DIR_WS_CATALOG . 'checkout_success.php');
+header('Location: ' . HTTP_SERVER . DIR_WS_HTTP_CATALOG . 'checkout_success.php');
