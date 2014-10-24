@@ -17,7 +17,7 @@ git clone --recursive https://github.com/ebanx/ebanx-oscommerce.git
 ```
 2. Visit your osCommerce payment methods settings at **Modules > Payment**.
 3. Click on the button called "+ Install Modules".
-4. If you wish to accept credit card payments from Brazil through EBANX, locate module **EBANX**and click "Install".
+4. If you wish to accept credit card payments from Brazil through EBANX, locate module **EBANX** and click "Install".
 5. Click on "Edit". Add the integration key you were given by the EBANX integration team. You will need to use different keys in test and production modes.
 6. Change the other settings if needed. Click on "Save".
 7. If you wish to accept "Boleto Bancário" and "TEF" payment, click on the "+ Install Modules" again and select module **EBANX Checkout** .
