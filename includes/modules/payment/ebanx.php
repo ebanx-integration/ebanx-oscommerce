@@ -243,12 +243,12 @@ class ebanx
         //Country title workaround
         if($order->billing['country']['title'] == 'Brazil')
         {
-          $order->billing['country']['title'] = 'BR';
+          $country = 'BR';
         }
 
         if($order->billing['country']['title'] == 'Peru')
         {
-          $order->billing['country']['title'] = 'PE';
+          $country = 'PE';
         }
 
         // Creates next order ID
@@ -260,9 +260,13 @@ class ebanx
         if (isset($_POST['instalments']) &&  $_POST['instalments'] > '1')
         {
             $interestRate = floatval(MODULE_PAYMENT_EBANX_INSTALLMENTSRATE);
-            $submit['payment']['amount_total'] = ($order->info['total'] * (100 + $interestRate)) / 100.0;
+            $value = ($order->info['total'] * (100 + $interestRate)) / 100.0;
         }
-        else $_POST['instalments'] = '1';
+        else
+        {
+            $_POST['instalments'] = '1';
+            $value = ($order->info['total']);
+        }
 
         // Retrieves customer's date of birth
         $dob_info = tep_db_query("SELECT customers_dob FROM " . TABLE_CUSTOMERS . " WHERE customers_id = " . $_SESSION['customer_id'] . " LIMIT 1");
@@ -275,7 +279,10 @@ class ebanx
             $dob_info = $dates[1] . '/' . $dates[2] . '/' . $dates[0];
 
         }
-        else $dob_info = '12/01/1987';
+        else
+        {
+            $dob_info = '12/01/1987';
+        }
 
         // Creates array for sending EBANX
         $submit = array(
@@ -293,10 +300,10 @@ class ebanx
                                      ,'state'      => $order->billing['state']
                                      ,'zipcode'    => $order->billing['postcode']
                                      ,'street_number' => $streetNumber
-                                     ,'country'    => $order->billing['country']['title']
+                                     ,'country'    => $country
                                      ,'phone_number' => $order->customer['telephone']
                                      ,'address'      => $order->billing['street_address']
-                                     ,'amount_total'       => $order->info['total']
+                                     ,'amount_total'       => $value
                                      ,'instalments'  => $_POST['instalments']
                                      ,'payment_type_code' => $_POST['cc_type']
                                      ,'creditcard'   => array(
