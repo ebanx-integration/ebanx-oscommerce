@@ -5,9 +5,9 @@ It includes support to installments and custom interest rates.
 
 ## Requirements
 
-* PHP >= 5.3
+* PHP >= 5.4
 * cURL
-* osCommerce >= v2.3.4
+* osCommerce >= v2.3
 
 ## Installation
 ### Source
