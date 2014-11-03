@@ -132,7 +132,7 @@ class ebanx_checkout
         // Sets EBANX Configuration parameters within lib
         \Ebanx\Config::set(array(
              'integrationKey' => MODULE_PAYMENT_EBANX_CHECKOUT_INTEGRATIONKEY
-            ,'testMode'       => MODULE_PAYMENT_EBANX_CHECKOUT_TESTMODE
+            ,'testMode'       => MODULE_PAYMENT_EBANX_CHECKOUT_TESTMODE == 'True'
                           )
         );
 
