@@ -260,7 +260,7 @@ class ebanx
         // Sets EBANX Configuration parameters within lib
         \Ebanx\Config::set(array(
             'integrationKey' => MODULE_PAYMENT_EBANX_INTEGRATIONKEY
-           ,'testMode'       => MODULE_PAYMENT_EBANX_TESTMODE
+           ,'testMode'       => MODULE_PAYMENT_EBANX_TESTMODE == 'True'
         ));
         \Ebanx\Config::setDirectMode(true);
 
