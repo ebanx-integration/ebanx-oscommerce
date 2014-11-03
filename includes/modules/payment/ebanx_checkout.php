@@ -161,7 +161,7 @@ class ebanx_checkout
                                                , 'name'              =>  $order->billing['firstname'] . ' ' . $order->billing['lastname']
                                                , 'email'             =>  $order->customer['email_address']
                                                , 'payment_type_code' =>  '_all'
-                                               , 'merchant_payment_code' => '668' //$new_order_id
+                                               , 'merchant_payment_code' => $new_order_id
                                                , 'country'           => $country
                                                , 'zipcode'           => $order->billing['postcode']
                                                , 'phone_number'      => $order->customer['telephone']
