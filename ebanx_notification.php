@@ -37,8 +37,7 @@ require (DIR_WS_MODULES . 'payment/ebanx/ebanx-php-master/src/autoload.php');
     'integrationKey' => MODULE_PAYMENT_EBANX_INTEGRATIONKEY
    
    ,'testMode'       => MODULE_PAYMENT_EBANX_TESTMODE
-                   )
-);
+));
 
 $hashes = $_REQUEST['hash_codes'];
 

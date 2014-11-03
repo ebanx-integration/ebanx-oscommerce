@@ -36,7 +36,6 @@ class ebanx_checkout
 {
     var $code, $title, $description, $enabled, $payment, $checkoutURL, $status;
     
-    // class constructor
     function ebanx_checkout()
     {
         global $order;
@@ -53,7 +52,6 @@ class ebanx_checkout
         }
     }
 
-    // class methods
     function update_status()
     {
         global $order;
@@ -156,16 +154,16 @@ class ebanx_checkout
       
         // Creates array and submits data to EBANX
         $submit = \Ebanx\Ebanx::doRequest(array(
-                                                 'currency_code'     =>  $order->info['currency']
-                                               , 'amount'            =>  $order->info['total']
-                                               , 'name'              =>  $order->billing['firstname'] . ' ' . $order->billing['lastname']
-                                               , 'email'             =>  $order->customer['email_address']
-                                               , 'payment_type_code' =>  '_all'
-                                               , 'merchant_payment_code' => $new_order_id
-                                               , 'country'           => $country
-                                               , 'zipcode'           => $order->billing['postcode']
-                                               , 'phone_number'      => $order->customer['telephone']
-                                          )
+            'currency_code'     =>  $order->info['currency']
+            , 'amount'            =>  $order->info['total']
+            , 'name'              =>  $order->billing['firstname'] . ' ' . $order->billing['lastname']
+            , 'email'             =>  $order->customer['email_address']
+            , 'payment_type_code' =>  '_all'
+            , 'merchant_payment_code' => $new_order_id
+            , 'country'           => $country
+            , 'zipcode'           => $order->billing['postcode']
+            , 'phone_number'      => $order->customer['telephone']
+            )
         ); 
 
       $this->status = $submit->status;
