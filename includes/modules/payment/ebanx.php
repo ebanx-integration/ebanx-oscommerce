@@ -297,14 +297,12 @@ class ebanx
 
         // Retrieves customer's date of birth
         $dob_info = tep_db_query("SELECT customers_dob FROM " . TABLE_CUSTOMERS . " WHERE customers_id = " . $_SESSION['customer_id'] . " LIMIT 1");
-
-        if (isset($dob_info))
+        $fetch = tep_db_fetch_array($dob_info);
+        $date_time = explode(" ", $fetch['customers_dob']);
+        if ($date_time[0] != '0000-00-00')
         {   
-            $fetch = tep_db_fetch_array($dob_info);
-            $date_time = explode(" ", $fetch['customers_dob']);
             $dates = explode("-", $date_time[0]);
-            $dob_info = $dates[1] . '/' . $dates[2] . '/' . $dates[0];
-
+            $dob_info = $dates[2] . '/' . $dates[1] . '/' . $dates[0];
         }
         else
         {
