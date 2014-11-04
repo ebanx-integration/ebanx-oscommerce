@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-define('MODULE_PAYMENT_EBANX_TEXT_TITLE', '<strong>EBANX</strong>');
+define('MODULE_PAYMENT_EBANX_TEXT_TITLE', 'EBANX');
 define('MODULE_PAYMENT_EBANX_TEXT_DESCRIPTION', 'Collects <strong>only</strong> credit card payments using EBANX network.');
 define('MODULE_PAYMENT_EBANX_TEXT_PUBLIC_TITLE', 'EBANX');
 define('MODULE_PAYMENT_EBANX_TEXT_PUBLIC_DESCRIPTION', 'Collects <strong>only</strong> credit card payments using EBANX network.');
