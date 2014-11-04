@@ -63,8 +63,8 @@ if (isset($hashes) && $hashes != null)
                 $check_query = tep_db_query("select orders_status_id from " . TABLE_ORDERS_STATUS . " where orders_status_name = 'Cancelled' limit 1");
                 $status_id = tep_db_fetch_array($check_query);
                 $code = $response->payment->merchant_payment_code;
-                tep_db_query('UPDATE ' . TABLE_ORDERS . ' SET orders_status = ' . $status_id . ' WHERE orders_id = ' . $code);
-                tep_db_query('UPDATE ' . TABLE_ORDERS_STATUS_HISTORY . ' SET orders_status_id = ' . $status_id . ' WHERE orders_status_history_id = ' . $code);
+                tep_db_query('UPDATE ' . TABLE_ORDERS . ' SET orders_status = ' . $status_id["orders_status_id"] . ' WHERE orders_id = ' . $code);
+                tep_db_query('UPDATE ' . TABLE_ORDERS_STATUS_HISTORY . ' SET orders_status_id = ' . $status_id["orders_status_id"] . ' WHERE orders_status_history_id = ' . $code);
                 echo 'Payment CA';
             }
         }
