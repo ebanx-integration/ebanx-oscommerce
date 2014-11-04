@@ -36,5 +36,5 @@ git clone --recursive https://github.com/ebanx/ebanx-oscommerce.git
 11. That's all!
 
 ## Changelog
-* 1.0.2: fixed dob workaround and notification file
+* 1.0.1: fixed dob workaround and notification file
 * 1.0.0: first release.
