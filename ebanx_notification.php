@@ -33,9 +33,17 @@
 require('includes/application_top.php');
 require (DIR_WS_MODULES . 'payment/ebanx/ebanx-php-master/src/autoload.php');
 
+if(defined(MODULE_PAYMENT_EBANX_INTEGRATIONKEY))
+{
+    $int = MODULE_PAYMENT_EBANX_INTEGRATIONKEY;
+}
+else
+{
+    $int = MODULE_PAYMENT_EBANX_CHECKOUT_INTEGRATIONKEY;
+}
+
 \Ebanx\Config::set(array(
-    'integrationKey' => MODULE_PAYMENT_EBANX_INTEGRATIONKEY
-   
+    'integrationKey' => $int
    ,'testMode'       => MODULE_PAYMENT_EBANX_TESTMODE == 'True'
 ));
 
