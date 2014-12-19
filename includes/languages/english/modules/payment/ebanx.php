@@ -44,3 +44,4 @@ define('MODULE_PAYMENT_EBANX_TEXT_POPUP_CVV_LINK', '&nbspO que é isso?');
 define('MODULE_PAYMENT_EBANX_TEXT_CUSTOMER_CPF', 'CPF');
 define('MODULE_PAYMENT_EBANX_TEXT_INSTALLMENTS', 'Parcelas:');
 define('MODULE_PAYMENT_EBANX_TEXT_CPF_ERROR', 'CPF Inválido!');
+define('MODULE_PAYMENT_EBANX_TEXT_STATE_ERROR', 'Estado inválido (Apenas siglas permitidas). Corrija nas informações de seu perfil!');

@@ -197,12 +197,12 @@ class ebanx
             tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . stripslashes(MODULE_PAYMENT_EBANX_TEXT_CPF_ERROR), 'SSL'));
         }
            
-            $this->cc_card_type = strtolower($cc_validation->cc_type);
-            $this->cc_card_number = $cc_validation->cc_number;
-            $this->cc_expiry_month = $cc_validation->cc_expiry_month;
-            $this->cc_expiry_year = $cc_validation->cc_expiry_year;
+        $this->cc_card_type = strtolower($cc_validation->cc_type);
+        $this->cc_card_number = $cc_validation->cc_number;
+        $this->cc_expiry_month = $cc_validation->cc_expiry_month;
+        $this->cc_expiry_year = $cc_validation->cc_expiry_year;
 
-            return false;
+        return false;
     }
 
     function confirmation()
@@ -252,6 +252,12 @@ class ebanx
     function before_process()
     {
         global $_POST,  $order, $sendto, $currency, $charge,$db, $messageStack;
+
+
+        if(strlen($order->billing['state']) > '2')
+        {
+            tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . MODULE_PAYMENT_EBANX_TEXT_STATE_ERROR , 'SSL'));
+        }
 
         // Street number workaround
         $streetNumber = preg_replace('/[\D]/', '', $order->billing['street_address']);
