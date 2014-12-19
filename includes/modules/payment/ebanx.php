@@ -253,7 +253,7 @@ class ebanx
     {
         global $_POST,  $order, $sendto, $currency, $charge,$db, $messageStack;
 
-
+        //State code workaround
         if(strlen($order->billing['state']) > '2')
         {
             tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . MODULE_PAYMENT_EBANX_TEXT_STATE_ERROR , 'SSL'));
