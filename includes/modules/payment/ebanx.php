@@ -97,6 +97,12 @@ class ebanx
     {
         global $order;
 
+        //Hides for non-brazilian customers
+        if($order->billing['country']['title'] != 'Brazil')
+        {
+            return $selection;
+        }
+
         // Creates dropdown list for expiring months
         for ($i=1; $i<13; $i++)
         {
@@ -136,7 +142,7 @@ class ebanx
                                'id="'.$this->code.'-cc-expires-year"' . $onFocus),
                                'tag' => $this->code.'-cc-expires-month');
                          
-        $fieldsArray[]= array('title' => MODULE_PAYMENT_EBANX_TEXT_CVV,
+        $fieldsArray[] = array('title' => MODULE_PAYMENT_EBANX_TEXT_CVV,
                                'field' => tep_draw_input_field('ebanx_cc_cvv','', 'size="4", maxlength="4" ' .
                                'id="'.$this->code.'-cc-cvv"' . $onFocus),
                                'tag' => $this->code.'-cc-cvv');
@@ -279,11 +285,6 @@ class ebanx
           $country = 'BR';
         }
 
-        if($order->billing['country']['title'] == 'Peru')
-        {
-          $country = 'PE';
-        }
-
         // Creates next order ID
         $last_order_id = tep_db_query("select * from " . TABLE_ORDERS . " order by orders_id desc limit 1");
         $new_order_id = tep_db_fetch_array($last_order_id);
@@ -395,38 +396,10 @@ class ebanx
              )   AUTO_INCREMENT=1 ;"
         );
         
-        // // Creates status "Cancelled" for EBANX orders
-        $order_status = 'Cancelled';
-        $status_id = 0;
-        $check_query = tep_db_query("select orders_status_id from ".TABLE_ORDERS_STATUS." where orders_status_name = '".$order_status."' limit 1");
-        if (tep_db_num_rows($check_query) < 1)
-        {
-            $status_query = tep_db_query("select max(orders_status_id) as status_id from ".TABLE_ORDERS_STATUS);
-            $status = tep_db_fetch_array($status_query);
-            $status_id = $status['status_id']+1;
-            $languages = tep_get_languages();
-            $flags_query = tep_db_query("describe " . TABLE_ORDERS_STATUS . " public_flag");
-            if (tep_db_num_rows($flags_query) == 1)
-            {
-              foreach ($languages as $lang)
-              {
-                tep_db_query("insert into ".TABLE_ORDERS_STATUS." (orders_status_id, language_id, orders_status_name, public_flag) values ('".$status_id."', '".$lang['id']."', "."'".$order_status."', 1)");
-              }
-            }
-            else
-            {
-              foreach ($languages as $lang)
-              {
-                tep_db_query("insert into ".TABLE_ORDERS_STATUS." (orders_status_id, language_id, orders_status_name) values ('".$status_id."', '".$lang['id']."', "."'".$order_status."')");
-              } 
-            }
-        }
-        else
-        {
-            $check = tep_db_fetch_array($check_query);
-            $status_id = $check['orders_status_id'];
-        }
-
+        // Creates statuses and brazilian states for EBANX orders
+        require_once 'ebanx/installer.php';
+        $installer = new Installer();
+        $installer->install();
 
         //Sets Integration Key if already existing in TABLE_CONFIGURATION
         $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " c where c.configuration_key = 'MODULE_PAYMENT_EBANX_CHECKOUT_INTEGRATIONKEY'");
@@ -458,7 +431,7 @@ class ebanx
 
     function validaCPF($cpf)
     {   
-        $cpf = str_pad(ereg_replace('[^0-9]', '', $cpf), 11, '0', STR_PAD_LEFT);
+        $cpf = str_pad(preg_replace('[^0-9]', '', $cpf), 11, '0', STR_PAD_LEFT);
                 
         if (strlen($cpf) != 11 || $cpf == '00000000000' || $cpf == '11111111111' || $cpf == '22222222222' || $cpf == '33333333333' || $cpf == '44444444444' || $cpf == '55555555555' || $cpf == '66666666666' || $cpf == '77777777777' || $cpf == '88888888888' || $cpf == '99999999999')
         {

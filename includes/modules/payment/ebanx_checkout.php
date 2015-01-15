@@ -91,14 +91,18 @@ class ebanx_checkout
     function selection()
     {
         global $order;
-        if($order->billing['country']['title'] == 'Brazil' || $order->billing['country']['title'] == 'Peru'){
-              
-            $fieldsArray = array();
-
+        if($order->billing['country']['title'] == 'Brazil')
+        {
             $selection   = array('id' => $this->code,
                                  'module' => MODULE_PAYMENT_EBANX_CHECKOUT_TEXT_CATALOG_TITLE
                                 );
         }
+        if($order->billing['country']['title'] == 'Peru')
+        {
+            $selection   = array('id' => $this->code,
+                                 'module' => MODULE_PAYMENT_EBANX_CHECKOUT_TEXT_CATALOG_TITLE_PERU
+                                );        }
+
         return $selection;
     }
   
@@ -226,39 +230,12 @@ class ebanx_checkout
              )   AUTO_INCREMENT=1 ;"
         );
         
-        // Creates status "Cancelled" for EBANX orders
-        $order_status = 'Cancelled';
-        $status_id = 0;
-        $check_query = tep_db_query("select orders_status_id from ".TABLE_ORDERS_STATUS." where orders_status_name = '".$order_status."' limit 1");
-        if (tep_db_num_rows($check_query) < 1)
-        {
-            $status_query = tep_db_query("select max(orders_status_id) as status_id from ".TABLE_ORDERS_STATUS);
-            $status = tep_db_fetch_array($status_query);
-            $status_id = $status['status_id']+1;
-            $languages = tep_get_languages();
-            $flags_query = tep_db_query("describe " . TABLE_ORDERS_STATUS . " public_flag");
-            if (tep_db_num_rows($flags_query) == 1)
-            {
-              foreach ($languages as $lang)
-              {
-                tep_db_query("insert into ".TABLE_ORDERS_STATUS." (orders_status_id, language_id, orders_status_name, public_flag) values ('".$status_id."', '".$lang['id']."', "."'".$order_status."', 1)");
-              }
-            }
-            else
-            {
-              foreach ($languages as $lang)
-              {
-                tep_db_query("insert into ".TABLE_ORDERS_STATUS." (orders_status_id, language_id, orders_status_name) values ('".$status_id."', '".$lang['id']."', "."'".$order_status."')");
-              } 
-            }
-        }
-        else
-        {
-            $check = tep_db_fetch_array($check_query);
-            $status_id = $check['orders_status_id'];
-        }
+        // Creates statuses and brazilian states for EBANX orders
+        require_once 'ebanx/installer.php';
+        $installer = new Installer();
+        $installer->install();
 
-        // // Sets Integration Key if already existing in TABLE_CONFIGURATION
+        // Sets Integration Key if already existing in TABLE_CONFIGURATION
         $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " c where c.configuration_key = 'MODULE_PAYMENT_EBANX_INTEGRATIONKEY'");
         $intKey = tep_db_fetch_array($check_query);
 
