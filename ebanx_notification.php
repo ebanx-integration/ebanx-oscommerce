@@ -50,6 +50,8 @@ else
 
 $hashes = $_REQUEST['hash_codes'];
 
+$type = $_REQUEST['notification_type'];
+
 $hashes = explode(',', $hashes);
 
 if (isset($hashes) && $hashes != null)
@@ -63,29 +65,29 @@ if (isset($hashes) && $hashes != null)
             $code = $response->payment->merchant_payment_code;
             if($response->payment->status == 'CO')
             {   
-                if(isset($response->payment->chargeback))
+                if($type == 'chargeback')
                 {
                     $check_query = tep_db_query("select orders_status_id from " . TABLE_ORDERS_STATUS . " where orders_status_name = 'Chargeback' limit 1");
                     $status_id = tep_db_fetch_array($check_query);
                     tep_db_query('UPDATE ' . TABLE_ORDERS . ' SET orders_status = ' . $status_id["orders_status_id"] . ' WHERE orders_id = ' . $code);
                     tep_db_query('UPDATE ' . TABLE_ORDERS_STATUS_HISTORY . ' SET orders_status_id = ' . $status_id["orders_status_id"] . ' WHERE orders_status_history_id = ' . $code);
-                    echo 'Chargeback';
+                    die('Chargeback');
                 }
 
-                if(isset($response->payment->refunds))
+                if($type == 'refund')
                 {
                     $check_query = tep_db_query("select orders_status_id from " . TABLE_ORDERS_STATUS . " where orders_status_name = 'Refunded' limit 1");
                     $status_id = tep_db_fetch_array($check_query);
                     tep_db_query('UPDATE ' . TABLE_ORDERS . ' SET orders_status = ' . $status_id["orders_status_id"] . ' WHERE orders_id = ' . $code);
                     tep_db_query('UPDATE ' . TABLE_ORDERS_STATUS_HISTORY . ' SET orders_status_id = ' . $status_id["orders_status_id"] . ' WHERE orders_status_history_id = ' . $code);
-                    echo 'Refunded';
+                    die('Refunded');
                 }
 
                 else
                 {
                     tep_db_query('UPDATE ' . TABLE_ORDERS . ' SET orders_status = 2 WHERE orders_id = ' . $code);
                     tep_db_query('UPDATE ' . TABLE_ORDERS_STATUS_HISTORY . ' SET orders_status_id = 2 WHERE orders_status_history_id = ' . $code);
-                    echo 'Payment CO';
+                    die('Payment CO');
                 }
             }
             
@@ -95,7 +97,7 @@ if (isset($hashes) && $hashes != null)
                 $status_id = tep_db_fetch_array($check_query);
                 tep_db_query('UPDATE ' . TABLE_ORDERS . ' SET orders_status = ' . $status_id["orders_status_id"] . ' WHERE orders_id = ' . $code);
                 tep_db_query('UPDATE ' . TABLE_ORDERS_STATUS_HISTORY . ' SET orders_status_id = ' . $status_id["orders_status_id"] . ' WHERE orders_status_history_id = ' . $code);
-                echo 'Payment CA';
+                die('Payment CA');
             }
         }
 

@@ -97,11 +97,21 @@ class ebanx_checkout
                                  'module' => MODULE_PAYMENT_EBANX_CHECKOUT_TEXT_CATALOG_TITLE
                                 );
         }
+
         if($order->billing['country']['title'] == 'Peru')
         {
             $selection   = array('id' => $this->code,
                                  'module' => MODULE_PAYMENT_EBANX_CHECKOUT_TEXT_CATALOG_TITLE_PERU
-                                );        }
+                                );
+        }
+
+        if($order->billing['country']['title'] == 'Mexico')
+        {
+            $selection   = array('id' => $this->code,
+                                 'module' => MODULE_PAYMENT_EBANX_CHECKOUT_TEXT_CATALOG_TITLE_MEXICO
+                                );
+        }
+
 
         return $selection;
     }
@@ -149,6 +159,11 @@ class ebanx_checkout
         if($order->billing['country']['title'] == 'Peru')
         {
             $country = 'PE';
+        }
+
+        if($order->billing['country']['title'] == 'Mexico')
+        {
+            $country = 'MX';
         }
 
         // Creates next order ID
