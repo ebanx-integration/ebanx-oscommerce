@@ -36,6 +36,7 @@ git clone --recursive https://github.com/ebanx/ebanx-oscommerce.git
 11. That's all!
 
 ## Changelog
+* 1.4.1: Added Mexico Checkout. Handled new Chargeback and Refund notification
 * 1.3.1: handled chargebacks and refunds
 * 1.2.1: added peruvian payment methods
 * 1.1.1: workaround for state codes
