@@ -264,6 +264,7 @@ class ebanx
         //State code workaround
         if(strlen($order->billing['state']) > '2')
         {
+<<<<<<< HEAD
             $state = tep_db_query("select * from " . TABLE_ZONES . " where zone_name = " . $order->billing['state']);
             $state = tep_db_fetch_array($state);
             //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . MODULE_PAYMENT_EBANX_TEXT_STATE_ERROR , 'SSL'));
@@ -271,6 +272,14 @@ class ebanx
         }
         var_dump($state);
             die;
+=======
+            $state = tep_db_query("select * from " . TABLE_ZONES . " where zone_name = '" . $order->billing['state'] . "'");
+            $state = tep_db_fetch_array($state);
+            //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . MODULE_PAYMENT_EBANX_TEXT_STATE_ERROR , 'SSL'));
+            $order->billing['state'] = $state['zone_code'];
+        }
+        
+>>>>>>> 49b554e8703ae2ea6831956d00f98a2ba1b2fa9c
 
         // Street number workaround
         $streetNumber = preg_replace('/[\D]/', '', $order->billing['street_address']);
@@ -300,8 +309,10 @@ class ebanx
         // If has installments, adjust total
         if (isset($_POST['instalments']) &&  $_POST['instalments'] > '1')
         {
-            $interestRate = floatval(MODULE_PAYMENT_EBANX_INSTALLMENTSRATE);
-            $value = number_format((($order->info['total'] * (100 + $interestRate)) / 100.0) , 2);
+            //$interestRate = floatval(MODULE_PAYMENT_EBANX_INSTALLMENTSRATE);
+            $value = $order->info['total'];
+            $instalments = $_POST['instalments'];
+            $value = $this->calculateTotalWithInterest($value,$instalments);
         }
         else
         {
@@ -463,4 +474,53 @@ class ebanx
             return true;
         }
     }
+
+    protected function calculateTotalWithInterest($orderTotal, $installments)
+      {
+        switch ($installments) {
+          case '1':
+            $interest_rate = 1.20;
+            break;
+          case '2':
+            $interest_rate = 2.30;
+            break;
+          case '3':
+            $interest_rate = 3.40;
+            break;
+          case '4':
+            $interest_rate = 4.50;
+            break;
+          case '5':
+            $interest_rate = 5.60;
+            break;
+          case '6':
+            $interest_rate = 6.70;
+            break;
+          case '7':
+            $interest_rate = 7.80;
+            break;
+          case '8':
+            $interest_rate = 8.90;
+            break;
+          case '9':
+            $interest_rate = 9.10;
+            break;
+          case '10':
+            $interest_rate = 10.11;
+            break;
+          case '11':
+            $interest_rate = 11.22;
+            break;
+          case '12':
+            $interest_rate = 12.33;
+            break;
+          default:
+            # code...
+            break;
+        }
+
+         $total = (floatval($interest_rate / 100) * floatval($orderTotal) + floatval($orderTotal));
+      
+        return number_format($total, 2, ".", " ");
+      }
 }
