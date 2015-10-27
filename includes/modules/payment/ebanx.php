@@ -259,11 +259,18 @@ class ebanx
     {
         global $_POST,  $order, $sendto, $currency, $charge,$db, $messageStack;
 
+
+
         //State code workaround
         if(strlen($order->billing['state']) > '2')
         {
-            tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . MODULE_PAYMENT_EBANX_TEXT_STATE_ERROR , 'SSL'));
+            $state = tep_db_query("select * from " . TABLE_ZONES . " where zone_name = " . $order->billing['state']);
+            $state = tep_db_fetch_array($state);
+            //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . MODULE_PAYMENT_EBANX_TEXT_STATE_ERROR , 'SSL'));
+
         }
+        var_dump($state);
+            die;
 
         // Street number workaround
         $streetNumber = preg_replace('/[\D]/', '', $order->billing['street_address']);
